@@ -1,0 +1,27 @@
+{
+  "name": "raptor",
+  "version": "1.0.0",
+  "description": "Dino api client to gather infos",
+  "scripts": {
+    "prebuild": "node -p \"'export const VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
+    "build": "tsc",
+    "lint": "eslint \"**/*.ts\"",
+    "start": "node dist/index.js",
+    "debug": "nodemon src/index.ts"
+  },
+  "author": "Alex Ottr <alex@ottr.one>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "eslint": "^8.6.0",
+    "eslint-plugin-import": "^2.25.4",
+    "nodemon": "^2.0.15"
+  }
+}
