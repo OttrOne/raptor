@@ -56,4 +56,4 @@ connect();
 get_player();
 
 // run every 10 min
-setTimeout(() => { get_player(); }, 10 * 60 * 1000);
+setInterval(() => { get_player(); }, 10 * 60 * 1000);
