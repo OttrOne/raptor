@@ -54,3 +54,6 @@ const get_player = async () => {
 connect();
 
 get_player();
+
+// run every 10 min
+setTimeout(() => { get_player(); }, 10 * 60 * 1000);
