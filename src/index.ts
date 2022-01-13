@@ -1,36 +1,31 @@
+import 'dotenv/config';
 import axios from 'axios';
-import mongoose, { Document, Schema, ConnectOptions } from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
+import express from 'express';
+import SampleModel from './models/sample';
+import { connect, ConnectOptions } from 'mongoose';
+import whitelistRouter from './routes/whitelist';
+import helmet from 'helmet';
 
-const connect = async () => {
-    await mongoose.connect(
-        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
-      {
-          keepAlive: true,
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-      } as ConnectOptions);
-    return mongoose;
-};
+const PORT = process.env.PORT || 5050;
+const app = express();
+app.use(helmet());
+app.use(express.json());
 
-export interface ISample extends Document {
-    online: number,
-    time : Date,
-    player : [ string,],
-}
+connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
+    {
+        keepAlive: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    } as ConnectOptions
+);
 
-const SampleSchema: Schema = new Schema({
-    online: { type: Number, },
-    time : { type : Date, default: Date.now },
-    player: [{ type: String }]
-});
-
-export const SampleModel = mongoose.model<ISample>('samples', SampleSchema);
+app.use('/whitelist', whitelistRouter);
+app.listen(PORT, () => console.log(`server started at http://localhost:${PORT}`));
 
 const get_player = async () => {
 
-    const res = await axios.get(`https://panel.revivenode.com/api/client/servers/${process.env.SERVER_ID}/players`, {
+    const res = await axios.get(`${process.env.PTERODACTYL_ENDPOINT}/api/client/servers/${process.env.SERVER_ID}/players`, {
         headers: {
             'Authorization' : `Bearer ${process.env.TOKEN}`,
             'Content-Type' : 'application/json',
@@ -50,8 +45,6 @@ const get_player = async () => {
     await sample.save();
     console.log('successfully saved');
 };
-
-connect();
 
 get_player();
 
