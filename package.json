@@ -1,6 +1,6 @@
 {
   "name": "raptor",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Dino api client to gather infos",
   "scripts": {
     "prebuild": "node -p \"'export const VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
