@@ -1,9 +1,7 @@
 import { Router } from 'express';
 import axios from 'axios';
-import auth from '../middleware/auth';
 
 const router = Router();
-router.use(auth);
 
 const validate_name = async (name: string) => {
 
